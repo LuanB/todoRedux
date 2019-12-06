@@ -36,7 +36,7 @@ export default function reducer(state = initial, action) {
     case 'ADD_TODO': {
       return append(state, {
         id: nextId(state),
-        title: action.title,
+        title: action.title.trim(),
         completed: false
       });
     }
