@@ -36,7 +36,7 @@ export default function reducer(state = initial, action) {
     case 'ADD_TODO': {
       return append(state, {
         id: nextId(state),
-        title: action.title.trim(),
+        title: action.title,
         completed: false
       });
     }
@@ -47,7 +47,7 @@ export default function reducer(state = initial, action) {
     }
     case 'EDIT_TODO': {
       return updateArrayById(state, action.id, todo =>
-        update(todo, { title: action.title })
+        update(todo, { title: action.title.trim() })
       );
     }
     case 'REMOVE_TODO': {
