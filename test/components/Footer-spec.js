@@ -72,6 +72,17 @@ describe('<Footer />', () => {
       assert.equal(selectFilter.withArgs('all').callCount, 1);
     });
 
+    it("should highlight 'Active' when selected", () => {
+      const tree = shallow(<Footer total={5} filter="active" />);
+      const selected = tree.find('.qa-filters').find('.selected');
+      assert.equal(selected.text(), 'Active');
+    });
+    it("should highlight 'Completed' when selected", () => {
+      const tree = shallow(<Footer total={5} filter="completed" />);
+      const selected = tree.find('.qa-filters').find('.selected');
+      assert.equal(selected.text(), 'Completed');
+    });
+
     //  it('should have more scenarios covered');
   });
 });
