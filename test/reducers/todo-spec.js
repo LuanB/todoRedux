@@ -1,8 +1,8 @@
 /* eslint-env mocha */
-import {assert} from "chai";
+import { assert } from 'chai';
 
-import * as actions from "../../client/actions";
-import todosReducer from "../../client/reducers/todos";
+import * as actions from '../../client/actions';
+import todosReducer from '../../client/reducers/todos';
 
 function applyActions(...actionsToApply) {
   const initial = todosReducer(undefined, {});
@@ -12,79 +12,78 @@ function applyActionsFrom(state, ...actionsToApply) {
   return actionsToApply.reduce(todosReducer, state);
 }
 
-describe("todos reducer", () => {
-
-  describe("initial", () => {
+describe('todos reducer', () => {
+  describe('initial', () => {
     const state = applyActions();
-    it("should be empty", () => {
-      assert.typeOf(state, "array");
+    it('should be empty', () => {
+      assert.typeOf(state, 'array');
       assert.lengthOf(state, 0);
     });
   });
 
-  describe("addTodo", () => {
-    it("should add a new todo", () => {
-      const state = applyActionsFrom([], actions.addTodo("Buy some milk"));
+  describe('addTodo', () => {
+    it('should add a new todo', () => {
+      const state = applyActionsFrom([], actions.addTodo('Buy some milk'));
       assert.lengthOf(state, 1);
       assert.deepEqual(state[0], {
         id: 1,
-        title: "Buy some milk",
+        title: 'Buy some milk',
         completed: false
       });
     });
-    it("should pick the next available id", () => {
+    it('should pick the next available id', () => {
       const state = applyActionsFrom(
         [
-          {id: 1, title: "Item A", completed: false},
-          {id: 3, title: "Item B", completed: true},
-          {id: 7, title: "Item C", completed: false},
+          { id: 1, title: 'Item A', completed: false },
+          { id: 3, title: 'Item B', completed: true },
+          { id: 7, title: 'Item C', completed: false }
         ],
-        actions.addTodo("pick a new id")
+        actions.addTodo('pick a new id')
       );
       assert.lengthOf(state, 4);
       assert.deepEqual(state[state.length - 1], {
         id: 8,
-        title: "pick a new id",
+        title: 'pick a new id',
         completed: false
       });
-    })
+    });
   });
 
-  describe("toggleTodo", () => {
+  describe('toggleTodo', () => {
     const initial = [
-      {id: 1, title: "Item A", completed: false},
-      {id: 3, title: "Item B", completed: true},
-      {id: 7, title: "Item C", completed: false},
+      { id: 1, title: 'Item A', completed: false },
+      { id: 3, title: 'Item B', completed: true },
+      { id: 7, title: 'Item C', completed: false }
     ];
-    it("should flip the relevant completed state to true", () => {
+    it('should flip the relevant completed state to true', () => {
       const state = applyActionsFrom(initial, actions.toggleTodo(7));
       assert.equal(state[2].completed, true);
     });
-    it("should flip the relevant completed state to false", () => {
+    it('should flip the relevant completed state to false', () => {
       const state = applyActionsFrom(initial, actions.toggleTodo(3));
       assert.equal(state[2].completed, false);
     });
   });
 
-  describe("editTodo", () => {
+  describe('editTodo', () => {
     const initial = [
-      {id: 1, title: "Item A", completed: false},
-      {id: 3, title: "Item B", completed: true},
-      {id: 7, title: "Item C", completed: false},
+      { id: 1, title: 'Item A', completed: false },
+      { id: 3, title: 'Item B', completed: true },
+      { id: 7, title: 'Item C', completed: false }
     ];
-    it("updates the title of the relevant todo", () => {
-      const state = applyActionsFrom(initial, actions.editTodo(3, "Renamed"));
-      assert.equal(state[1].title, "Renamed");
+    it('updates the title of the relevant todo', () => {
+      const state = applyActionsFrom(initial, actions.editTodo(3, 'Renamed'));
+      assert.equal(state[1].title, 'Renamed');
     });
   });
 
-  describe("removeTodo", () => {
+  describe('removeTodo', () => {
     const initial = [
-      {id: 1, title: "Item A", completed: false},
-      {id: 3, title: "Item B", completed: true},
-      {id: 7, title: "Item C", completed: false},
+      { id: 1, title: 'Item A', completed: false },
+      { id: 3, title: 'Item B', completed: true },
+      { id: 7, title: 'Item C', completed: false }
     ];
-    it("removes the relevant todo", () => {
+    it('removes the relevant todo', () => {
       const state = applyActionsFrom(initial, actions.removeTodo(1));
       assert.lengthOf(state, 2);
       assert.equal(state[0].id, 3);
@@ -92,23 +91,40 @@ describe("todos reducer", () => {
     });
   });
 
-  describe("setAll", () => {
+  describe('setAll', () => {
     const initial = [
-      {id: 1, title: "Item A", completed: false},
-      {id: 3, title: "Item B", completed: true},
-      {id: 7, title: "Item C", completed: false},
+      { id: 1, title: 'Item A', completed: false },
+      { id: 3, title: 'Item B', completed: true },
+      { id: 7, title: 'Item C', completed: false }
     ];
-    it("can set all to completed", () => {
+    it('can set all to completed', () => {
       const state = applyActionsFrom(initial, actions.setAll(true));
       assert.deepEqual(state.map(t => t.completed), [true, true, true]);
     });
-    it("can set all to un-completed", () => {
+    it('can set all to un-completed', () => {
       const state = applyActionsFrom(initial, actions.setAll(false));
       assert.deepEqual(state.map(t => t.completed), [false, false, false]);
     });
   });
 
-  describe("clearCompleted", () => {
-    it("should have tests!");
+  describe('clearCompleted', () => {
+    //  it("should have tests!");
+
+    const initial = [
+      { id: 1, title: 'Item A', completed: false },
+      { id: 3, title: 'Item B', completed: true },
+      { id: 7, title: 'Item C', completed: false }
+    ];
+    it('removes completed todos, todos with id 1 & 7 remain as state[0, 1]', () => {
+      const state = applyActionsFrom(initial, actions.clearCompleted());
+      assert.lengthOf(state, 2);
+      assert.equal(state[0].id, 1);
+      assert.equal(state[1].id, 7);
+    });
+
+    it('correctly trims the title of the todo in the edit case', () => {
+      const state = applyActionsFrom(initial, actions.editTodo(1, '  Trim  '));
+      assert.equal(state[0].title, 'Trim');
+    });
   });
 });
