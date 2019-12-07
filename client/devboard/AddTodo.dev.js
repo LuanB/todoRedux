@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
-import devboard from "devboard";
+import devboard from 'devboard';
 
-const definecard = devboard.ns("1. <AddTodo />");
+const definecard = devboard.ns('1. <AddTodo />');
 
-import DemoBox from "./DemoBox";
-import AddTodo from "../components/AddTodo";
+import DemoBox from './DemoBox';
+import AddTodo from '../components/AddTodo';
 
 definecard(
   `
@@ -14,17 +14,34 @@ definecard(
   `
 );
 
-definecard("When empty",
+definecard(
+  'When empty',
   <DemoBox>
     <AddTodo />
   </DemoBox>
 );
 
-definecard("With content filled in",
+definecard(
+  'With content filled in',
   <DemoBox>
-    <AddTodo ref={(ref) => {
-      if (!ref) return;
-      ref.setState({value: "Add a new todo"})
-    }}/>
+    <AddTodo
+      ref={ref => {
+        if (!ref) return;
+        ref.setState({ value: 'Add a new todo' });
+      }}
+    />
+    <AddTodo
+      ref={ref => {
+        if (!ref) return;
+        ref.setState({ value: 'todo item 2' });
+      }}
+    />
+
+    <AddTodo
+      ref={ref => {
+        if (!ref) return;
+        ref.setState({ value: 'todo item 3' });
+      }}
+    />
   </DemoBox>
 );
