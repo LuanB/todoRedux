@@ -63,10 +63,14 @@ describe('<Footer />', () => {
       const selected = tree.find('.qa-filters').find('.selected');
       assert.equal(selected.text(), 'All');
     });
+
+    // needed to change this test [filter="all" to filter='active'] because new if function
+    // disables firing of action if selected filter is already selected when clicked on again.
+
     it("should select 'All' when clicked", () => {
       const selectFilter = sinon.spy();
       const tree = shallow(
-        <Footer total={5} filter="all" selectFilter={selectFilter} />
+        <Footer total={5} filter="active" selectFilter={selectFilter} />
       );
       tree.find({ children: 'All' }).simulate('click', mouseEvent());
       assert.equal(selectFilter.withArgs('all').callCount, 1);
@@ -81,6 +85,20 @@ describe('<Footer />', () => {
       const tree = shallow(<Footer total={5} filter="completed" />);
       const selected = tree.find('.qa-filters').find('.selected');
       assert.equal(selected.text(), 'Completed');
+    });
+
+    it('should not fire action if filter is already selected', () => {
+      const actionFired = sinon.spy();
+      const tree = shallow(
+        <Footer total={5} filter="completed" selectFilter={actionFired} />
+      );
+      tree
+        .find('.qa-filters')
+        .find('.selected')
+        .simulate('click', {
+          preventDefault: () => {}
+        });
+      assert.equal(actionFired.callCount, 0);
     });
 
     //  it('should have more scenarios covered');
