@@ -20,7 +20,7 @@
     "eslint-plugin-react": "^6.2.2",
     "express": "^4.14.0",
     "json-loader": "^0.5.4",
-    "lodash": "^4.16.3",
+    "lodash": "^4.17.13",
     "mocha": "^3.0.2",
     "react": "^15.3.2",
     "react-addons-test-utils": "^15.3.2",
